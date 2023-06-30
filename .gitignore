@@ -1,0 +1,9 @@
+*.exe
+*.EXE
+
+*.o
+
+.vscode
+
+obj/
+lib/djgpp/
