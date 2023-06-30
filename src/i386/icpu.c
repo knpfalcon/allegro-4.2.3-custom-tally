@@ -17,7 +17,7 @@
  *      See readme.txt for copyright information.
  */
 
-
+#include <stdio.h>
 #include "allegro.h"
 #include "allegro/internal/aintern.h"
 
@@ -25,7 +25,7 @@
 
  /* helpers from icpus.s */
 int _i_is_486(void);
-//int _i_is_fpuis_fpu(void);
+int _i_is_fpuis_fpu(void);
 int _i_is_cyrix(void);
 void _i_cx_w(int index, int value);
 char _i_cx_r(int index);
@@ -157,8 +157,15 @@ void check_cpu()
    }
    else
    {
-      printf("\nCPUID INSTRUCTION NOT SUPPORTED\n");
-      //cpu_capabilities |= (_i_is_fpu() ? CPU_FPU : 0);
+      printf("CPUID INSTRUCTION NOT SUPPORTED\n");
+
+#ifdef CHECK_FPU_IF_NO_CPUID
+      printf("Checking for FPU.\n");
+      cpu_capabilities |= (_i_is_fpu() ? CPU_FPU : 0);
+#else
+      printf("Skipping FPU Check.\n");
+#endif
+
       if (!_i_is_486())
       {
          cpu_family = 3;

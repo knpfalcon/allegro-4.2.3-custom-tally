@@ -11,7 +11,7 @@
 # -------- define some variables that the primary makefile will use --------
 
 PLATFORM = djgpp
-CC = gcc -fgnu89-inline 
+CC = gcc -fgnu89-inline
 EXE = .exe
 OBJ = .o
 
@@ -163,7 +163,7 @@ _default: default
 ifdef WARNMODE
    WFLAGS = -Wall -W -Wstrict-prototypes -Wno-unused -Werror
 else
-   WFLAGS = -Wall -Wno-unused
+   WFLAGS = -Wall -Wno-unused 
 endif
 
 
@@ -185,14 +185,17 @@ OFLAGS = $(TARGET_ARCH) $(TARGET_OPTS)
 
 CFLAGS = -DALLEGRO_LIB_BUILD
 
-
+ifdef  CHECK_FPU_IF_NO_CPUID
+CFLAGS += -DCHECK_FPU_IF_NO_CPUID
+SFLAGS += -DCHECK_FPU_IF_NO_CPUID
+endif
 
 ifdef DEBUGMODE
 
 # -------- debugging build --------
 
 CFLAGS += -DDEBUGMODE=$(DEBUGMODE) $(TARGET_ARCH) $(WFLAGS) -g
-SFLAGS = -DDEBUGMODE=$(DEBUGMODE) $(TARGET_ARCH) $(WFLAGS)
+SFLAGS += -DDEBUGMODE=$(DEBUGMODE) $(TARGET_ARCH) $(WFLAGS)
 LFLAGS = -g
 
 else
@@ -200,14 +203,16 @@ ifdef PROFILEMODE
 
 # -------- profiling build --------
 CFLAGS += $(WFLAGS) $(OFLAGS) -pg
-SFLAGS = $(WFLAGS)
+SFLAGS += $(WFLAGS)
 LFLAGS = -pg
 
 else
 
 # -------- optimised build --------
+
+
 CFLAGS += $(WFLAGS) $(OFLAGS) -fomit-frame-pointer
-SFLAGS = $(WFLAGS)
+SFLAGS += $(WFLAGS) 
 
 ifndef SYMBOLMODE
    LFLAGS = -s
