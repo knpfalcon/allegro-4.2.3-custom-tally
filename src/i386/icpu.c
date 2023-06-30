@@ -159,10 +159,6 @@ void check_cpu()
    {
       printf("CPUID INSTRUCTION NOT SUPPORTED\n");
 
-#ifdef CHECK_FPU_IF_NO_CPUID
-      printf("Checking for FPU.\n");
-      cpu_capabilities |= (_i_is_fpu() ? CPU_FPU : 0);
-#else
       if (check_fpu > 0)
       {
          printf("Checking for FPU.\n");
@@ -170,7 +166,6 @@ void check_cpu()
       }
       else
          printf("Skipping FPU Check.\n");
-#endif
 
       if (!_i_is_486())
       {
