@@ -61,7 +61,6 @@ is486_done:
 /* int _i_is_fpu();
  *  Returns TRUE is the CPU has floating point hardware.
  */
-#ifdef CHECK_FPU_IF_NO_CPUID
 FUNC(_i_is_fpu)
    pushl %ebp
    movl %esp, %ebp
@@ -81,7 +80,6 @@ is_fpu_not_found:
 is_fpu_done:
    popl %ebp
    ret
-#endif
 
 /* int _i_is_cyrix();
  *  Returns TRUE if this is a Cyrix processor.

@@ -25,14 +25,14 @@
 
  /* helpers from icpus.s */
 int _i_is_486(void);
-int _i_is_fpuis_fpu(void);
+int _i_is_fpu(void);
 int _i_is_cyrix(void);
 void _i_cx_w(int index, int value);
 char _i_cx_r(int index);
 int _i_is_cpuid_supported(void);
 void _i_get_cpuid_info(uint32_t cpuid_levels, uint32_t *reg);
 
-
+int check_fpu = 0;
 
 /* cyrix_type:
  *  Detects which type of Cyrix CPU is in use.
@@ -163,7 +163,13 @@ void check_cpu()
       printf("Checking for FPU.\n");
       cpu_capabilities |= (_i_is_fpu() ? CPU_FPU : 0);
 #else
-      printf("Skipping FPU Check.\n");
+      if (check_fpu > 0)
+      {
+         printf("Checking for FPU.\n");
+         cpu_capabilities |= (_i_is_fpu() ? CPU_FPU : 0);
+      }
+      else
+         printf("Skipping FPU Check.\n");
 #endif
 
       if (!_i_is_486())
