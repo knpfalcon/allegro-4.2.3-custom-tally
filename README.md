@@ -1,11 +1,10 @@
 # Allegro 4.2.3 - Custom Build for Tally Trauma
 
-This is a modified version of Allegro 4.2.3 for my DOS game Tally Trauma. So far, I've removed Allegro's check for FPU. DJGPP would throw an SIGNOFP when I was intentionally avoiding floats. I also modified the dat tool to stop appending file extentions onto datafile object names. For example, formerly when using dat, a file like FILE.PCX would be name FILE_PCX inside the datafile. Now there's no _PCX tacked on.
+This is a modified version of Allegro 4.2.3 for my DOS game Tally Trauma.
 
-This version is meant to be used with the DJGPP cross-compiler. There's no guarantee if it will work for you. I'm putting this repo up for two reasons:
-
-1. To back-up my changes.
-2. Keep my modifcations open-source for anyone to look at.
+### Changes from Original
+- Don't check automatically for FPU if CPUID instruction isn't present. This used to cause a SIGNOFP crash with DJGPP. Now the user has the option to set `check_fpu` to true to check for FPU if CPUID isn't present.
+- DAT tool now doesn't append file extentions to the end of object names. For example, IMAGE.PCX will be in your datafile as simply IMAGE.
 
 I also added recompile.sh for easy recompling. It cleans everything, generates the dependencies, then recompiles. It may need to be modified based on your setup.
 
