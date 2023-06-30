@@ -106,6 +106,7 @@ void check_cpu()
 
    if (_i_is_cpuid_supported())
    {
+      printf("\nCPUID INSTRUCTION SUPPORTED\n");
       cpu_capabilities |= CPU_ID;
       _i_get_cpuid_info(0x00000000, reg);
       cpuid_levels = reg[0];
@@ -156,6 +157,7 @@ void check_cpu()
    }
    else
    {
+      printf("\nCPUID INSTRUCTION NOT SUPPORTED\n");
       //cpu_capabilities |= (_i_is_fpu() ? CPU_FPU : 0);
       if (!_i_is_486())
       {
