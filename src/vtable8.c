@@ -85,13 +85,14 @@ GFX_VTABLE __linear_vtable8 =
    _soft_arc,
    _soft_spline,
    _soft_floodfill,
-
+#ifndef TALLY_BUILD
    _soft_polygon3d,
    _soft_polygon3d_f,
    _soft_triangle3d,
    _soft_triangle3d_f,
    _soft_quad3d,
    _soft_quad3d_f
+#endif
 };
 
 

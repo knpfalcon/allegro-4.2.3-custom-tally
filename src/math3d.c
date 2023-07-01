@@ -1,6 +1,6 @@
-/*         ______   ___    ___ 
- *        /\  _  \ /\_ \  /\_ \ 
- *        \ \ \L\ \\//\ \ \//\ \      __     __   _ __   ___ 
+/*         ______   ___    ___
+ *        /\  _  \ /\_ \  /\_ \
+ *        \ \ \L\ \\//\ \ \//\ \      __     __   _ __   ___
  *         \ \  __ \ \ \ \  \ \ \   /'__`\ /'_ `\/\`'__\/ __`\
  *          \ \ \/\ \ \_\ \_ \_\ \_/\  __//\ \L\ \ \ \//\ \L\ \
  *           \ \_\ \_\/\____\/\____\ \____\ \____ \ \_\\ \____/
@@ -15,6 +15,7 @@
  *      See readme.txt for copyright information.
  */
 
+#ifndef TALLY_BUILD
 
 #include <math.h>
 
@@ -27,13 +28,13 @@
 
 
 
-MATRIX identity_matrix = 
+MATRIX identity_matrix =
 {
    {
       /* 3x3 identity */
-      { 1<<16, 0,     0     },
-      { 0,     1<<16, 0     },
-      { 0,     0,     1<<16 },
+      { 1 << 16, 0,     0     },
+      { 0,     1 << 16, 0     },
+      { 0,     0,     1 << 16 },
    },
 
    /* zero translation */
@@ -42,7 +43,7 @@ MATRIX identity_matrix =
 
 
 
-MATRIX_f identity_matrix_f = 
+MATRIX_f identity_matrix_f =
 {
    {
       /* 3x3 identity */
@@ -58,7 +59,7 @@ MATRIX_f identity_matrix_f =
 
 
 /* get_translation_matrix:
- *  Constructs a 3d translation matrix. When applied to the vector 
+ *  Constructs a 3d translation matrix. When applied to the vector
  *  (vx, vy, vx), this will produce (vx+x, vy+y, vz+z).
  */
 void get_translation_matrix(MATRIX *m, fixed x, fixed y, fixed z)
@@ -89,7 +90,7 @@ void get_translation_matrix_f(MATRIX_f *m, float x, float y, float z)
 
 
 /* get_scaling_matrix:
- *  Constructs a 3d scaling matrix. When applied to the vector 
+ *  Constructs a 3d scaling matrix. When applied to the vector
  *  (vx, vy, vx), this will produce (vx*x, vy*y, vz*z).
  */
 void get_scaling_matrix(MATRIX *m, fixed x, fixed y, fixed z)
@@ -120,8 +121,8 @@ void get_scaling_matrix_f(MATRIX_f *m, float x, float y, float z)
 
 
 /* get_x_rotate_matrix:
- *  Constructs a 3d transformation matrix, which will rotate points around 
- *  the x axis by the specified amount (given in the Allegro fixed point, 
+ *  Constructs a 3d transformation matrix, which will rotate points around
+ *  the x axis by the specified amount (given in the Allegro fixed point,
  *  256 degrees to a circle format).
  */
 void get_x_rotate_matrix(MATRIX *m, fixed r)
@@ -162,8 +163,8 @@ void get_x_rotate_matrix_f(MATRIX_f *m, float r)
 
 
 /* get_y_rotate_matrix:
- *  Constructs a 3d transformation matrix, which will rotate points around 
- *  the y axis by the specified amount (given in the Allegro fixed point, 
+ *  Constructs a 3d transformation matrix, which will rotate points around
+ *  the y axis by the specified amount (given in the Allegro fixed point,
  *  256 degrees to a circle format).
  */
 void get_y_rotate_matrix(MATRIX *m, fixed r)
@@ -204,8 +205,8 @@ void get_y_rotate_matrix_f(MATRIX_f *m, float r)
 
 
 /* get_z_rotate_matrix:
- *  Constructs a 3d transformation matrix, which will rotate points around 
- *  the z axis by the specified amount (given in the Allegro fixed point, 
+ *  Constructs a 3d transformation matrix, which will rotate points around
+ *  the z axis by the specified amount (given in the Allegro fixed point,
  *  256 degrees to a circle format).
  */
 void get_z_rotate_matrix(MATRIX *m, fixed r)
@@ -306,7 +307,7 @@ void get_z_rotate_matrix_f(MATRIX_f *m, float r)
 
 /* get_rotation_matrix:
  *  Constructs a 3d transformation matrix, which will rotate points around
- *  all three axis by the specified amounts (given in the Allegro fixed 
+ *  all three axis by the specified amounts (given in the Allegro fixed
  *  point, 256 degrees to a circle format).
  */
 void get_rotation_matrix(MATRIX *m, fixed x, fixed y, fixed z)
@@ -374,9 +375,9 @@ void get_align_matrix(MATRIX *m, fixed xfront, fixed yfront, fixed zfront, fixed
    cross_product(xfront, yfront, zfront, xright, yright, zright, &xup, &yup, &zup);
    /* No need to normalize up here, since right and front are perpendicular and normalized. */
 
-   m->v[0][0] = xright; 
-   m->v[0][1] = xup; 
-   m->v[0][2] = xfront; 
+   m->v[0][0] = xright;
+   m->v[0][1] = xup;
+   m->v[0][2] = xfront;
 
    m->v[1][0] = yright;
    m->v[1][1] = yup;
@@ -409,9 +410,9 @@ void get_align_matrix_f(MATRIX_f *m, float xfront, float yfront, float zfront, f
    cross_product_f(xfront, yfront, zfront, xright, yright, zright, &xup, &yup, &zup);
    /* No need to normalize up here, since right and front are perpendicular and normalized. */
 
-   m->v[0][0] = xright; 
-   m->v[0][1] = xup; 
-   m->v[0][2] = xfront; 
+   m->v[0][0] = xright;
+   m->v[0][1] = xup;
+   m->v[0][2] = xfront;
 
    m->v[1][0] = yright;
    m->v[1][1] = yup;
@@ -428,7 +429,7 @@ void get_align_matrix_f(MATRIX_f *m, float xfront, float yfront, float zfront, f
 
 /* get_vector_rotation_matrix:
  *  Constructs a 3d transformation matrix, which will rotate points around
- *  the specified x,y,z vector by the specified angle (given in the Allegro 
+ *  the specified x,y,z vector by the specified angle (given in the Allegro
  *  fixed point, 256 degrees to a circle format), in a clockwise direction.
  */
 void get_vector_rotation_matrix(MATRIX *m, fixed x, fixed y, fixed z, fixed a)
@@ -439,9 +440,9 @@ void get_vector_rotation_matrix(MATRIX *m, fixed x, fixed y, fixed z, fixed a)
 
    get_vector_rotation_matrix_f(&rotation, fixtof(x), fixtof(y), fixtof(z), fixtof(a));
 
-   for (i=0; i<3; i++)
-      for (j=0; j<3; j++)
-	 m->v[i][j] = ftofix(rotation.v[i][j]);
+   for (i = 0; i < 3; i++)
+      for (j = 0; j < 3; j++)
+         m->v[i][j] = ftofix(rotation.v[i][j]);
 
    m->t[0] = m->t[1] = m->t[2] = 0;
 }
@@ -479,7 +480,7 @@ void get_vector_rotation_matrix_f(MATRIX_f *m, float x, float y, float z, float 
 
 /* get_transformation_matrix:
  *  Constructs a 3d transformation matrix, which will rotate points around
- *  all three axis by the specified amounts (given in the Allegro fixed 
+ *  all three axis by the specified amounts (given in the Allegro fixed
  *  point, 256 degrees to a circle format), scale the result by the
  *  specified amount (itofix(1) for no change of scale), and then translate
  *  to the requested x, y, z position.
@@ -535,7 +536,7 @@ void get_transformation_matrix_f(MATRIX_f *m, float scale, float xrot, float yro
 
 
 
-/* get_camera_matrix: 
+/* get_camera_matrix:
  *  Constructs a camera matrix for translating world-space objects into
  *  a normalised view space, ready for the perspective projection. The
  *  x, y, and z parameters specify the camera position, xfront, yfront,
@@ -559,14 +560,15 @@ void get_camera_matrix(MATRIX *m, fixed x, fixed y, fixed z, fixed xfront, fixed
    ASSERT(m);
 
    get_camera_matrix_f(&camera,
-		       fixtof(x), fixtof(y), fixtof(z), 
-		       fixtof(xfront), fixtof(yfront), fixtof(zfront), 
-		       fixtof(xup), fixtof(yup), fixtof(zup), 
-		       fixtof(fov), fixtof(aspect));
+      fixtof(x), fixtof(y), fixtof(z),
+      fixtof(xfront), fixtof(yfront), fixtof(zfront),
+      fixtof(xup), fixtof(yup), fixtof(zup),
+      fixtof(fov), fixtof(aspect));
 
-   for (i=0; i<3; i++) {
-      for (j=0; j<3; j++)
-	 m->v[i][j] = ftofix(camera.v[i][j]);
+   for (i = 0; i < 3; i++)
+   {
+      for (j = 0; j < 3; j++)
+         m->v[i][j] = ftofix(camera.v[i][j]);
 
       m->t[i] = ftofix(camera.t[i]);
    }
@@ -574,7 +576,7 @@ void get_camera_matrix(MATRIX *m, fixed x, fixed y, fixed z, fixed xfront, fixed
 
 
 
-/* get_camera_matrix_f: 
+/* get_camera_matrix_f:
  *  Floating point version of get_camera_matrix().
  */
 void get_camera_matrix_f(MATRIX_f *m, float x, float y, float z, float xfront, float yfront, float zfront, float xup, float yup, float zup, float fov, float aspect)
@@ -591,8 +593,8 @@ void get_camera_matrix_f(MATRIX_f *m, float x, float y, float z, float xfront, f
 
    /* make sure 'up' is at right angles to 'in-front', and normalize */
    d = dot_product_f(xup, yup, zup, xfront, yfront, zfront);
-   xup -= d * xfront; 
-   yup -= d * yfront; 
+   xup -= d * xfront;
+   yup -= d * yfront;
    zup -= d * zfront;
    normalize_vector_f(&xup, &yup, &zup);
 
@@ -600,26 +602,26 @@ void get_camera_matrix_f(MATRIX_f *m, float x, float y, float z, float xfront, f
    cross_product_f(xup, yup, zup, xfront, yfront, zfront, &xside, &yside, &zside);
 
    /* set matrix rotation parameters */
-   camera.v[0][0] = xside; 
+   camera.v[0][0] = xside;
    camera.v[0][1] = yside;
    camera.v[0][2] = zside;
 
-   camera.v[1][0] = xup; 
+   camera.v[1][0] = xup;
    camera.v[1][1] = yup;
    camera.v[1][2] = zup;
 
-   camera.v[2][0] = xfront; 
+   camera.v[2][0] = xfront;
    camera.v[2][1] = yfront;
    camera.v[2][2] = zfront;
 
    /* set matrix translation parameters */
-   camera.t[0] = -(x*xside  + y*yside  + z*zside);
-   camera.t[1] = -(x*xup    + y*yup    + z*zup);
-   camera.t[2] = -(x*xfront + y*yfront + z*zfront);
+   camera.t[0] = -(x * xside + y * yside + z * zside);
+   camera.t[1] = -(x * xup + y * yup + z * zup);
+   camera.t[2] = -(x * xfront + y * yfront + z * zfront);
 
    /* construct a scaling matrix to deal with aspect ratio and FOV */
-   width = floattan(64.0 - fov/2);
-   get_scaling_matrix_f(&scale, width, -aspect*width, -1.0);
+   width = floattan(64.0 - fov / 2);
+   get_scaling_matrix_f(&scale, width, -aspect * width, -1.0);
 
    /* combine the camera and scaling matrices */
    matrix_mul_f(&camera, &scale, m);
@@ -661,9 +663,9 @@ void qscale_matrix(MATRIX *m, fixed scale)
    int i, j;
    ASSERT(m);
 
-   for (i=0; i<3; i++)
-      for (j=0; j<3; j++)
-	 m->v[i][j] = fixmul(m->v[i][j], scale);
+   for (i = 0; i < 3; i++)
+      for (j = 0; j < 3; j++)
+         m->v[i][j] = fixmul(m->v[i][j], scale);
 }
 
 
@@ -676,9 +678,9 @@ void qscale_matrix_f(MATRIX_f *m, float scale)
    int i, j;
    ASSERT(m);
 
-   for (i=0; i<3; i++)
-      for (j=0; j<3; j++)
-	 m->v[i][j] *= scale;
+   for (i = 0; i < 3; i++)
+      for (j = 0; j < 3; j++)
+         m->v[i][j] *= scale;
 }
 
 
@@ -698,27 +700,31 @@ void matrix_mul(AL_CONST MATRIX *m1, AL_CONST MATRIX *m2, MATRIX *out)
    ASSERT(m2);
    ASSERT(out);
 
-   if (m1 == out) {
+   if (m1 == out)
+   {
       temp = *m1;
       m1 = &temp;
    }
-   else if (m2 == out) {
+   else if (m2 == out)
+   {
       temp = *m2;
       m2 = &temp;
    }
 
-   for (i=0; i<3; i++) {
-      for (j=0; j<3; j++) {
-	 out->v[i][j] = fixmul(m1->v[0][j], m2->v[i][0]) +
-			fixmul(m1->v[1][j], m2->v[i][1]) +
-			fixmul(m1->v[2][j], m2->v[i][2]);
+   for (i = 0; i < 3; i++)
+   {
+      for (j = 0; j < 3; j++)
+      {
+         out->v[i][j] = fixmul(m1->v[0][j], m2->v[i][0]) +
+            fixmul(m1->v[1][j], m2->v[i][1]) +
+            fixmul(m1->v[2][j], m2->v[i][2]);
       }
 
       out->t[i] = fixmul(m1->t[0], m2->v[i][0]) +
-		  fixmul(m1->t[1], m2->v[i][1]) +
-		  fixmul(m1->t[2], m2->v[i][2]) +
-		  m2->t[i];
-   } 
+         fixmul(m1->t[1], m2->v[i][1]) +
+         fixmul(m1->t[2], m2->v[i][2]) +
+         m2->t[i];
+   }
 }
 
 
@@ -734,32 +740,36 @@ void matrix_mul_f(AL_CONST MATRIX_f *m1, AL_CONST MATRIX_f *m2, MATRIX_f *out)
    ASSERT(m2);
    ASSERT(out);
 
-   if (m1 == out) {
+   if (m1 == out)
+   {
       temp = *m1;
       m1 = &temp;
    }
-   else if (m2 == out) {
+   else if (m2 == out)
+   {
       temp = *m2;
       m2 = &temp;
    }
 
-   for (i=0; i<3; i++) {
-      for (j=0; j<3; j++) {
-	 out->v[i][j] = (m1->v[0][j] * m2->v[i][0]) +
-			(m1->v[1][j] * m2->v[i][1]) +
-			(m1->v[2][j] * m2->v[i][2]);
+   for (i = 0; i < 3; i++)
+   {
+      for (j = 0; j < 3; j++)
+      {
+         out->v[i][j] = (m1->v[0][j] * m2->v[i][0]) +
+            (m1->v[1][j] * m2->v[i][1]) +
+            (m1->v[2][j] * m2->v[i][2]);
       }
 
       out->t[i] = (m1->t[0] * m2->v[i][0]) +
-		  (m1->t[1] * m2->v[i][1]) +
-		  (m1->t[2] * m2->v[i][2]) +
-		  m2->t[i];
+         (m1->t[1] * m2->v[i][1]) +
+         (m1->t[2] * m2->v[i][2]) +
+         m2->t[i];
    }
 }
 
 
 
-/* vector_length: 
+/* vector_length:
  *  Computes the length of a vector, using the son of the squaw...
  */
 fixed vector_length(fixed x, fixed y, fixed z)
@@ -768,22 +778,22 @@ fixed vector_length(fixed x, fixed y, fixed z)
    y >>= 8;
    z >>= 8;
 
-   return (fixsqrt(fixmul(x,x) + fixmul(y,y) + fixmul(z,z)) << 8);
+   return (fixsqrt(fixmul(x, x) + fixmul(y, y) + fixmul(z, z)) << 8);
 }
 
 
 
-/* vector_lengthf: 
+/* vector_lengthf:
  *  Floating point version of vector_length().
  */
 float vector_length_f(float x, float y, float z)
 {
-   return sqrt(x*x + y*y + z*z);
+   return sqrt(x * x + y * y + z * z);
 }
 
 
 
-/* normalize_vector: 
+/* normalize_vector:
  *  Converts the specified vector to a unit vector, which has the same
  *  orientation but a length of one.
  */
@@ -798,7 +808,7 @@ void normalize_vector(fixed *x, fixed *y, fixed *z)
 
 
 
-/* normalize_vectorf: 
+/* normalize_vectorf:
  *  Floating point version of normalize_vector().
  */
 void normalize_vector_f(float *x, float *y, float *z)
@@ -853,7 +863,7 @@ fixed polygon_z_normal(AL_CONST V3D *v1, AL_CONST V3D *v2, AL_CONST V3D *v3)
    ASSERT(v1);
    ASSERT(v2);
    ASSERT(v3);
-   return (fixmul(v2->x-v1->x, v3->y-v2->y) - fixmul(v3->x-v2->x, v2->y-v1->y));
+   return (fixmul(v2->x - v1->x, v3->y - v2->y) - fixmul(v3->x - v2->x, v2->y - v1->y));
 }
 
 
@@ -866,7 +876,7 @@ float polygon_z_normal_f(AL_CONST V3D_f *v1, AL_CONST V3D_f *v2, AL_CONST V3D_f 
    ASSERT(v1);
    ASSERT(v2);
    ASSERT(v3);
-   return ((v2->x-v1->x) * (v3->y-v2->y)) - ((v3->x-v2->x) * (v2->y-v1->y));
+   return ((v2->x - v1->x) * (v3->y - v2->y)) - ((v3->x - v2->x) * (v2->y - v1->y));
 }
 
 
@@ -885,22 +895,23 @@ float _persp_yoffset_f = 100.0;
 
 
 /* set_projection_viewport:
- *  Sets the viewport used to scale the output of the persp_project() 
+ *  Sets the viewport used to scale the output of the persp_project()
  *  function.
  */
 void set_projection_viewport(int x, int y, int w, int h)
 {
    ASSERT(w > 0);
    ASSERT(h > 0);
-   
-   _persp_xscale = itofix(w/2);
-   _persp_yscale = itofix(h/2);
-   _persp_xoffset = itofix(x + w/2);
-   _persp_yoffset = itofix(y + h/2);
 
-   _persp_xscale_f = w/2;
-   _persp_yscale_f = h/2;
-   _persp_xoffset_f = x + w/2;
-   _persp_yoffset_f = y + h/2;
+   _persp_xscale = itofix(w / 2);
+   _persp_yscale = itofix(h / 2);
+   _persp_xoffset = itofix(x + w / 2);
+   _persp_yoffset = itofix(y + h / 2);
+
+   _persp_xscale_f = w / 2;
+   _persp_yscale_f = h / 2;
+   _persp_xoffset_f = x + w / 2;
+   _persp_yoffset_f = y + h / 2;
 }
 
+#endif

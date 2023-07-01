@@ -16,7 +16,7 @@
  *
  *      See readme.txt for copyright information.
  */
-
+#ifndef TALLY_BUILD
 
 #include <float.h>
 #include <limits.h>
@@ -824,3 +824,5 @@ void render_scene(void)
    scene_nedge = scene_maxedge;
    scene_npoly = scene_maxpoly;
 }
+
+#endif

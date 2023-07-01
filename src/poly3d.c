@@ -20,7 +20,7 @@
  *
  *      See readme.txt for copyright information.
  */
-
+#ifndef TALLY_BUILD
 
 #include <limits.h>
 #include <float.h>
@@ -1821,3 +1821,5 @@ ZBUFFER *create_sub_zbuffer(ZBUFFER *parent, int x, int y, int width, int height
    /* For now, just use the code for BITMAPs. */
    return create_sub_bitmap(parent, x, y, width, height);
 }
+
+#endif
