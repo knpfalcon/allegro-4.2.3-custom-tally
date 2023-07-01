@@ -4,7 +4,7 @@
 # For easier comiling with the DJPP cross-compiler on Linux
 #   Use ./recompile -all to build RELEASE, DEBUG and PROFILE versions of Allegro
 
-# Paths to DJGPP set these to where ever you have your DJGPP Cross-compiler
+# Paths to DJGPP. Set these to where you have DJGPP
 export PATH=$HOME/djgpp/i586-pc-msdosdjgpp/bin/:$PATH
 export GCC_EXEC_PREFIX=$HOME/djgpp/lib/gcc/
 
