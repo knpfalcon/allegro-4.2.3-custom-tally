@@ -55,13 +55,11 @@
 
 #include "allegro/fixed.h"
 #include "allegro/fmaths.h"
-#ifndef TALLY_BUILD
 #include "allegro/matrix.h"
 #include "allegro/quat.h"
 
 #include "allegro/3d.h"
 #include "allegro/3dmaths.h"
-#endif
 
 #ifndef ALLEGRO_NO_COMPATIBILITY
 #include "allegro/alcompat.h"

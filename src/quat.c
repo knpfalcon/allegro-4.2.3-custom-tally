@@ -14,7 +14,6 @@
  *
  *      See readme.txt for copyright information.
  */
-#ifndef TALLY_BUILD
 
 #include <math.h>
 
@@ -466,6 +465,4 @@ void quat_slerp(AL_CONST QUAT *from, AL_CONST QUAT *to, float t, QUAT *out, int 
    out->y = (float)((scale_from * from->y) + (scale_to * to2.y));
    out->z = (float)((scale_from * from->z) + (scale_to * to2.z));
 }
-
-#endif
 

@@ -15,8 +15,6 @@
  *      See readme.txt for copyright information.
  */
 
-#ifndef TALLY_BUILD
-
 #include <math.h>
 
 #include "allegro.h"
@@ -914,4 +912,3 @@ void set_projection_viewport(int x, int y, int w, int h)
    _persp_yoffset_f = y + h / 2;
 }
 
-#endif
