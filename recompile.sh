@@ -5,40 +5,161 @@
 #   Use ./recompile -all to build RELEASE, DEBUG and PROFILE versions of Allegro
 
 # Paths to DJGPP. Set these to where you have DJGPP
-export PATH=$HOME/djgpp/i586-pc-msdosdjgpp/bin/:$PATH
-export GCC_EXEC_PREFIX=$HOME/djgpp/lib/gcc/
+DJGPPGBIN=$HOME/djgpp/i586-pc-msdosdjgpp/bin
 
 # For automatic copying after build, set these to your DJPP and ALLEGRO parent directories
 export DJGPP_DIR=$HOME/djgpp
 export ALLEGRO_DIR=$HOME/allegro
 
+export MAKEDOC=$ALLEGRO_DIR/docs/makedoc
+
+
+exportpaths()
+{
+    export PATH=$DJGPPGBIN/:$PATH
+    export GCC_EXEC_PREFIX=$HOME/djgpp/lib/gcc/
+}
 # Clean, Rebuild Dependencies, Build Lib
-echo "\nCleaning Allegro"
-echo "----------------"
-make veryclean TARGET_ARCH_EXCL=i386 UNIX_TOOLS=1 CROSSCOMPILE=1
-make veryclean TARGET_ARCH_EXCL=i386 UNIX_TOOLS=1 CROSSCOMPILE=1 DEBUGMODE=1
-make veryclean TARGET_ARCH_EXCL=i386 UNIX_TOOLS=1 CROSSCOMPILE=1 PROFILEMODE=1
-echo "\nRebuilding Allegro Dependencies"
-echo "-------------------------------"
-make depend TARGET_ARCH_EXCL=i386 UNIX_TOOLS=1 CROSSCOMPILE=1
-if [ "$1" = "-all" ]; then
+clean()
+{
+    echo "\nDeep Cleaning Allegro"
+    echo "----------------"
+    make veryclean TARGET_ARCH_EXCL=i386 UNIX_TOOLS=1 CROSSCOMPILE=1
+    make veryclean TARGET_ARCH_EXCL=i386 UNIX_TOOLS=1 CROSSCOMPILE=1 DEBUGMODE=1
+    make veryclean TARGET_ARCH_EXCL=i386 UNIX_TOOLS=1 CROSSCOMPILE=1 PROFILEMODE=1
+}
+
+# Rebuild Dependencies
+depend()
+{
+    echo "\nBuilding Allegro Dependencies"
+    echo "-------------------------------"
+    cat $ALLEGRO_DIR/tools/plugins/*.inc > $ALLEGRO_DIR/obj/djgpp/plugins.h
+    make depend TARGET_ARCH_EXCL=i386 UNIX_TOOLS=1 CROSSCOMPILE=1
+}
+
+release()
+{
+    echo "\nBuilding Allegro Release Lib"
+    echo "-----------------------"
+    make lib TARGET_ARCH_EXCL=i386 UNIX_TOOLS=1 CROSSCOMPILE=1
+}
+
+debug()
+{
+    echo "\nBuilding Allegro Debug Lib"
+    echo "-----------------------"
     make depend TARGET_ARCH_EXCL=i386 UNIX_TOOLS=1 CROSSCOMPILE=1 DEBUGMODE=1
+}
+
+profile()
+{
+    echo "\nBuilding Allegro Profile Lib"
+    echo "-----------------------"
     make depend TARGET_ARCH_EXCL=i386 UNIX_TOOLS=1 CROSSCOMPILE=1 PROFILEMODE=1
-fi
-echo "\nRebuilding Allegro Libs"
-echo "-----------------------"
-make lib TARGET_ARCH_EXCL=i386 UNIX_TOOLS=1 CROSSCOMPILE=1
+}
+
+examples()
+{
+    make examples TARGET_ARCH_EXCL=i386 UNIX_TOOLS=1 CROSSCOMPILE=1
+}
+
+docs()
+{
+    $MAKEDOC -chm docs/chm/allegro.html docs/src/allegro._tx
+}
+
+makedoc()
+{
+    ( cd $ALLEGRO_DIR/docs/src/makedoc/; ./makedoc.sh )
+}
+
+dat()
+{
+    ( cd $ALLEGRO_DIR/tools; ./build_dat.sh )
+}
+
+copy()
+{
+    echo "\nCopying Allegro Libs..."
+    cp -R -T $ALLEGRO_DIR/lib/djgpp $DJGPP_DIR/lib/
+    echo "\nCopying Allegro Headers..."
+    cp -r $ALLEGRO_DIR/include/ $DJGPP_DIR
+}
+
+makeall()
+{
+    clean
+    depend
+    make all TARGET_ARCH_EXCL=i386 UNIX_TOOLS=1 CROSSCOMPILE=1 DEBUGMODE=1
+}
+
 if [ "$1" = "-all" ]; then
-    make lib TARGET_ARCH_EXCL=i386 UNIX_TOOLS=1 CROSSCOMPILE=1 DEBUGMODE=1
-    make lib TARGET_ARCH_EXCL=i386 UNIX_TOOLS=1 CROSSCOMPILE=1 PROFILEMODE=1
+    exportpaths
+    clean
+    depend
+    release
+    debug
+    profile
+    dat
 fi
 
-# Clear prefix so the modified version of DAT will compile with modern GCC
-# We don't want to use a DOS version
-export GCC_EXEC_PREFIX=
-$ALLEGRO_DIR/tools/build_dat.sh
 
-echo "\nCopying Allegro Libs..."
-cp -R -T $ALLEGRO_DIR/lib/djgpp $DJGPP_DIR/lib/
-echo "\nCopying Allegro Headers..."
-cp -r $ALLEGRO_DIR/include/ $DJGPP_DIR
+if [ "$1" = "-clean" ]; then
+    exportpaths
+    clean
+fi
+
+if [ "$1" = "-release" ]; then
+    exportpaths
+    clean
+    depend
+    release
+fi
+
+if [ "$1" = "-debug" ]; then
+    exportpaths
+    clean
+    depend
+    debug
+fi
+
+if [ "$1" = "-profile" ]; then
+    exportpaths
+    clean
+    depend
+    profile
+fi
+
+if [ "$1" = "-depend" ]; then
+    exportpaths
+    depend
+fi
+
+
+if [ $# -eq 0 ]; then
+    exportpaths
+    clean
+    depend
+    release
+    copy
+fi
+
+if [ "$1" = "-dat" ]; then
+    dat
+fi
+
+
+if [ "$1" = "-docs" ]; then
+    docs
+fi
+
+if [ "$1" = "-makedoc" ]; then
+    makedoc
+fi
+
+if [ "$1" = "-tools" ]; then
+    dat
+    makedoc
+fi
+

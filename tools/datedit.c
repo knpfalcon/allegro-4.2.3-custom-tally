@@ -110,7 +110,7 @@ void datedit_init(void)
 #elif defined ALLEGRO_WATCOM
 #include "obj/watcom/plugins.h"
 #elif defined ALLEGRO_UNIX
-#include "plugins.h"
+#include "obj/djgpp/plugins.h"
 #elif defined ALLEGRO_MINGW32
 #include "obj/mingw32/plugins.h"
 #elif defined ALLEGRO_DMC
