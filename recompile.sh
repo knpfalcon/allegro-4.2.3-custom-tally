@@ -66,8 +66,10 @@ examples()
 
 docs()
 {
-    $MAKEDOC -chm docs/chm/allegro.html docs/src/allegro._tx
+    ( cd docs/src/; for file in *._tx; do $MAKEDOC -html $HOME/alleg423manual/$(basename $file ._tx).html $file; done )
+    ( cd docs/src/build; for file in *._tx; do $MAKEDOC -html $HOME/alleg423manual/build/$(basename $file ._tx).html $file; done )
 }
+
 
 makedoc()
 {
