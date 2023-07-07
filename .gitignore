@@ -6,3 +6,5 @@
 .vscode
 
 *.a
+
+docs/makedoc
